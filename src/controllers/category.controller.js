@@ -43,7 +43,7 @@ const getAllCategory = asyncHandler( async (req, res) => {
     //send it as response
 
     try {
-        const allCategory = await Category.find();
+        const allCategory = await Category.find({});
 
         if(allCategory.length < 0) {
             new ApiError(404, "Category not found");

@@ -3,7 +3,7 @@ import { Category } from "../models/category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { uploadonCloudinary } from "../utils/cloudinary.js"
-import { setDefaultAutoSelectFamilyAttemptTimeout } from "node:net";
+import { ApiResponse } from "../utils/ApiResnponse.js"
 
 
 const addProduct = asyncHandler( async (req, res) => {
@@ -23,7 +23,9 @@ const addProduct = asyncHandler( async (req, res) => {
             throw new ApiError(400, "Name, description, category needed for a product.");
     }
 
-    const categoryExist = await Category.findById(category._id);
+    const categoryExist = await Category.findOne({
+        name: category
+    });
 
     if(!categoryExist) {
         throw new ApiError(404, "Category not found.");
@@ -71,5 +73,21 @@ const addProduct = asyncHandler( async (req, res) => {
     );
 })
 
+const getProducts = asyncHandler( async(req, res) => {
+    //get all the products from the user
+    //send response to user
+    const products = await Product.find({});
 
-export { addProduct };
+    if(products.length < 1) {
+        throw new ApiError(404, "Products are not availble.");
+    }
+
+    return res.status(200).
+    json(
+        new ApiResponse(200, products, "Product fetch successfully"
+        )
+    );
+})
+
+
+export { addProduct, getProducts };
