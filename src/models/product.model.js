@@ -1,5 +1,4 @@
 import mongoose, {Schema} from "mongoose";
-import { type } from "os";
 
 const productSchema = new Schema({
     description: {
@@ -11,7 +10,8 @@ const productSchema = new Schema({
         required: true,
     },
     productImage: {
-        type: String
+        type: String,
+        required: true
     },
     price: {
         type: Number,
@@ -25,10 +25,6 @@ const productSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Category",
         required: true,
-    },
-    Owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
     }
 },
     {
